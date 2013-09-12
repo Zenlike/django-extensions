@@ -15,7 +15,13 @@ import datetime
 from decimal import Decimal
 from django.db import models
 from django.conf import settings
-from django.utils import simplejson
+
+
+try:
+    import json
+except ImportError:
+    # Django < 1.5 backwards compatibility
+    from django.utils import simplejson as json
 
 
 class JSONEncoder(simplejson.JSONEncoder):
@@ -33,7 +39,7 @@ def dumps(value):
 
 
 def loads(txt):
-    value = simplejson.loads(
+    value = json.loads(
         txt,
         parse_float=Decimal,
         encoding=settings.DEFAULT_CHARSET
